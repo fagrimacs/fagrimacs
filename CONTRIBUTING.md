@@ -54,6 +54,8 @@ venv\scripts\activate
 pip install -r requirements-dev.txt
 ```
 
+Rename `.env_sample` into `.env` and fill in your credentials as required.
+
 ## Do some work
 
 Pick up an issue, reproduce it on your version. Once you have reproduced it, read the code to work out where the problem is. Once you've found the code problem, you can move on to fixing it.
