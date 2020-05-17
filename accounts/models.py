@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, name, password=None):
-        
+
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -20,7 +20,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, name, password=None):
-        
+
         user = self.create_user(
             email,
             password=password,
@@ -48,7 +48,7 @@ class CustomUser(AbstractBaseUser):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name',]
+    REQUIRED_FIELDS = ['name', ]
 
     def __str__(self):
         return self.email
