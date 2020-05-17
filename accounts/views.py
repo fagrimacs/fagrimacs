@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from accounts.models import CustomUser
 
 from accounts.forms import FarmerSignUpForm
-from farmer.models import FarmerProfile
+from farmers.models import FarmerProfile
 from accounts.tokens import account_activation_token
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
