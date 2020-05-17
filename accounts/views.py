@@ -1,20 +1,20 @@
-from django.shortcuts import render, reverse
+from django.conf import settings
 from django.contrib.auth.views import LoginView
+from django.core.mail import EmailMessage
+from django.shortcuts import render, reverse
+from django.template.loader import get_template
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import TemplateView
-from accounts.models import CustomUser
 
 from accounts.forms import FarmerSignUpForm
-from farmers.models import FarmerProfile
+from accounts.models import CustomUser
 from accounts.tokens import account_activation_token
-from django.template.loader import get_template
-from django.core.mail import EmailMessage
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.conf import settings
+from farmers.models import FarmerProfile
 
 
 class UserLoginView(LoginView):
-    """Allow user to login in platform """
+    """View for user to login in platform """
     template_name = 'registration/login.html'
 
     def get_success_url(self):
@@ -32,12 +32,12 @@ class UserLoginView(LoginView):
 
 
 class SignUpView(TemplateView):
-    """Allow farmer and owner to signup"""
+    """View for farmer and owner to signup"""
     template_name = 'registration/signup.html'
 
 
 def farmer_signup(request):
-    """Allow farmer to signup and activate their account"""
+    """View for farmer to signup and activate their account"""
     form = FarmerSignUpForm(request.POST or None)
     if form.is_valid():
         user = form.save()
@@ -66,6 +66,7 @@ def farmer_signup(request):
 
 
 class ConfirmRegistrationView(TemplateView):
+    """View for user to confirm registration."""
     def get(self, request, user_id, token):
         user_id = force_text(urlsafe_base64_decode(user_id))
 

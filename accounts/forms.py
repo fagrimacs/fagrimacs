@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.db import transaction
-from .models import CustomUser
+
 from farmers.models import FarmerProfile
+
+from .models import CustomUser
 
 
 class UserCreationForm(forms.ModelForm):

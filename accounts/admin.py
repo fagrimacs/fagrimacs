@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 
-from accounts.models import CustomUser
 from accounts import forms
+from accounts.models import CustomUser
+
 
 class CustomUserAdmin(BaseUserAdmin):
     # The forms to add and change user instances
