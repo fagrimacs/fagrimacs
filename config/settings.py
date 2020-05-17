@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -92,7 +93,7 @@ if not DEBUG:
             },
         }
     }
-    
+
 else:
     DATABASES = {
         'default': {
