@@ -1,5 +1,6 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.views import LoginView
+from django.views.generic import TemplateView
 
 
 class UserLoginView(LoginView):
@@ -18,3 +19,8 @@ class UserLoginView(LoginView):
             return reverse('admins:admin-homepage')
         else:
             return f'/admin/'
+
+
+class SignUpView(TemplateView):
+    """Allow farmer and owner to signup"""
+    template_name = 'registration/signup.html'
