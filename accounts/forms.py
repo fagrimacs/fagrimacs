@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
-from accounts.models import CustomUser
+from django.db import transaction
+from .models import CustomUser
+# from farmer.models import FarmerProfile
 
 
 class UserCreationForm(forms.ModelForm):
@@ -47,3 +48,16 @@ class UserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class FarmerSignUpForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+        user.is_farmer = True
+        user.save()
+        return user
