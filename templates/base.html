@@ -10,13 +10,52 @@
     </title>
     <link rel="shortcut icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom-styles.css' %}">
 </head>
 <body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">Fagrimacs</a>
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'login' %}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:signup' %}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    {% block content %}
+    <div class="container">
 
-    {% endblock content %}
+        {% block content %}
+
+        {% endblock content %}
+
+    </div>
 
     <script src="{% static 'js/jquery.slim.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>

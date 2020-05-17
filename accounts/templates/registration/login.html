@@ -2,20 +2,20 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<body>
-    <div class="col-md-4 offset-md-4">
-      <div class="card-body"><br>
-        <div class="card-title"><h2>Login</h2></div>
-          <form method="POST" autocomplete="off" novalidate>
-            {% csrf_token %}
-            {{ form|crispy }}
-          <a href="#">Forgot your password?</a><br><br>
-      <div class="text-center">
-      <button type="submit" class="btn btn-dark btn-block btn-lg">Login</button><br>
-      <input type="hidden" name='next' value='{{ next }}'>
-      Not on Fagrimacs yet? <a href="{% url 'accounts:signup' %}">Register Now</a>
-      </div>
-      </div>
+
+    <div class="col-md-6 offset-md-3 mt-5">
+		<div class="card p-3">
+			<h2 class="text-center mb-4">Login</h2>
+				<form method="POST" autocomplete="off" novalidate>
+				{% csrf_token %}
+				{{ form | crispy }}
+				<a href="#">Forgot your password?</a>
+			<div class="text-center pt-4">
+				<button type="submit" class="btn btn-dark btn-block btn-lg">Login</button><br>
+				<input type="hidden" name='next' value='{{ next }}'>
+				Not on Fagrimacs yet? <a href="{% url 'accounts:signup' %}">Register Now</a>
+			</div>
+		</div>
     </div><br><br>
-</body>
+
 {% endblock %}
