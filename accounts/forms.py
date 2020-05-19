@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.db import transaction
 
-from farmers.models import FarmerProfile
-
 from .models import CustomUser
 
 
@@ -61,5 +59,18 @@ class FarmerSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_farmer = True
+        user.save()
+        return user
+
+
+class OwnerSignUpForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+        user.is_owner = True
         user.save()
         return user

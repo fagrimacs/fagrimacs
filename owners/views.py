@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class OwnerHomeView(TemplateView):
+    """Add Farmer Dashboard view """
+    template_name = 'owner/owner_home.html'

@@ -7,10 +7,11 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import TemplateView
 
-from accounts.forms import FarmerSignUpForm
+from accounts.forms import FarmerSignUpForm, OwnerSignUpForm
 from accounts.models import CustomUser
 from accounts.tokens import account_activation_token
 from farmers.models import FarmerProfile
+from owners.models import OwnerProfile
 
 
 class UserLoginView(LoginView):
@@ -61,6 +62,35 @@ def farmer_signup(request):
             'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
             })
     return render(request, 'registration/farmer_signup.html', {
+        'form': form,
+    })
+
+
+def owner_signup(request):
+    """View for Owners to signup and activate their account"""
+    form = OwnerSignUpForm(request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        user.email = form.cleaned_data['email']
+        user.save()
+        # Create profile
+        owner_profile = OwnerProfile(user=user)
+        owner_profile.save()
+        # send confirmation email
+        token = account_activation_token.make_token(user)
+        user_id = urlsafe_base64_encode(force_bytes(user.id))
+        url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
+        message = get_template('registration/account_activation_email.html').render({
+            'confirm_url': url
+        })
+        mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
+        mail.content_subtype = 'html'
+        mail.send()
+
+        return render(request, 'registration/registration_pending.html',{
+            'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
+            })
+    return render(request, 'registration/owner_signup.html', {
         'form': form,
     })
 

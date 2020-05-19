@@ -22,7 +22,7 @@ class FarmerProfile(models.Model):
         return f'{self.user.name} Profile'
 
     def get_absolute_url(self):
-        return reverse('farmer:farmer-profile', kwargs={'pk': self.user_id})
+        return reverse('farmers:farmer-profile', kwargs={'pk': self.user_id})
 
     def get_profile_update_url(self):
-        return reverse('farmer:farmer-profile-update', kwargs={'pk': self.user_id})
+        return reverse('farmers:farmer-profile-update', kwargs={'pk': self.user_id})
