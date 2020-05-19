@@ -38,6 +38,7 @@ else:
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'farmers.apps.FarmersConfig',
+    'owners.apps.OwnersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
