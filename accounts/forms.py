@@ -74,3 +74,16 @@ class OwnerSignUpForm(UserCreationForm):
         user.is_owner = True
         user.save()
         return user
+
+
+class AdminSignUpForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+        user.is_admin = True
+        user.save()
+        return user
