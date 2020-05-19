@@ -127,6 +127,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST_USER = 'admin@fagrimacs.com'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

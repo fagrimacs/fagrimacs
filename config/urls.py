@@ -10,5 +10,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('farmer/', include('farmers.urls', namespace='farmers')),
     path('owner/', include('owners.urls', namespace='owners')),
-    path('admin/', include('admins.urls', namespace='admins')),
+    path('admins/', include('admins.urls', namespace='admins')),
 ]
