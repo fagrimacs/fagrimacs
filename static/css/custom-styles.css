@@ -1,0 +1,19 @@
+@font-face {
+	font-family: "PT-Sans-Bold";
+	src: url(../fonts/PT_Sans-Web-Bold.ttf);
+}
+  
+@font-face {
+	font-family: "PT-Sans-Regular";
+	src: url(../fonts/PT_Sans-Web-Regular.ttf);
+}
+  
+@font-face {
+	font-family: "PT-Sans-Italic";
+	src: url(../fonts/PT_Sans-Web-Italic.ttf);
+}
+
+body {
+	font-family: 'PT-Sans-Regular', sans-serif;
+	line-height: 1.5;
+}
