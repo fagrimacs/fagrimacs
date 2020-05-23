@@ -2,13 +2,7 @@ from django import forms
 
 from accounts.models import CustomUser
 from farmers.models import FarmerProfile
-
-
-class UserUpdateForm(forms.ModelForm):
-
-    class Meta:
-        model = CustomUser
-        fields = ['name', 'phone', ]
+from accounts.forms import UserUpdateForm
 
 
 class FarmerProfileUpdateForm(forms.ModelForm):

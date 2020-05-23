@@ -89,3 +89,10 @@ class AdminSignUpForm(UserCreationForm):
         user.is_admin = True
         user.save()
         return user
+
+
+class UserUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ['name', 'phone', ]

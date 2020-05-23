@@ -31,6 +31,6 @@ class FarmerProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMe
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_form'] = UserUpdateForm
-        context['profile_form'] = FarmerProfileUpdateForm
+        context['user_form'] = UserUpdateForm(instance=self.request.user)
+        context['profile_form'] = FarmerProfileUpdateForm(instance=self.request.user.farmerprofile)
         return context
