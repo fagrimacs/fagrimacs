@@ -1,0 +1,13 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+          <img class="img-profile rounded-circle" src="{{ farmer_profile.profile_pic.url }}" alt="">
+          <h4>{{ farmer_profile }}</h4>
+          {% if request.user == farmer_profile.user %}
+          <div class="my-3">
+              <a class="btn btn-secondary" href="{{ farmer_profile.get_profile_update_url }}">Edit Profile</a>
+              <a class="btn btn-danger ml-2" href="{% url 'password_change' %}">Change Password</a>
+          </div>
+          {% endif %}
+{% endblock %}

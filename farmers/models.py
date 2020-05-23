@@ -9,7 +9,7 @@ from accounts.models import CustomUser
 # Farmer Profile
 def profile_pic_filename(instance, filename):
     ext = filename.split('.')[1]
-    new_filename = '{}.{}'.format(uuid4(), ext)
+    new_filename = f'{uuid4()}.{ext}'
     return f'profile_pics/{new_filename}'
 
 
@@ -26,3 +26,7 @@ class FarmerProfile(models.Model):
 
     def get_profile_update_url(self):
         return reverse('farmers:farmer-profile-update', kwargs={'pk': self.user_id})
+
+    def update_profile_picture(self):
+        current_pic = self.profile_pic.url
+        print(current_pic)
