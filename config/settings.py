@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'farmers.apps.FarmersConfig',
     'owners.apps.OwnersConfig',
     'admins.apps.AdminsConfig',
+    'main.apps.MainConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
