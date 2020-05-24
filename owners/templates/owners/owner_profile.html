@@ -1,0 +1,12 @@
+{% extends 'dashboard-base.html' %}
+
+{% block content %}
+    <img src="{{ owner_profile.profile_pic.url }}" alt="">
+    <h4>{{ owner_profile }}</h4>
+    <div class="my-3">
+        <a class="btn btn-secondary" href="{{ owner_profile.get_profile_update_url }}">Edit Profile</a>
+        <a class="btn btn-danger ml-2" href="{% url 'password_change' %}">Change Password</a>
+    </div>
+
+
+{% endblock content %}
