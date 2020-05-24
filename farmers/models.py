@@ -15,7 +15,7 @@ def profile_pic_filename(instance, filename):
 
 class FarmerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    profile_pic = models.ImageField(verbose_name='Profile Picture', default='profile_pics/default.png', upload_to=profile_pic_filename)
+    profile_pic = models.ImageField(verbose_name='Profile Picture', default='profile_pics/user.svg', upload_to=profile_pic_filename)
     email_confirmed = models.BooleanField(default=False)
 
     def __str__(self):
