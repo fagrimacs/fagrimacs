@@ -4,7 +4,8 @@
 {% block content %}
     <form method="POST" class="pt-4 col-md-8 offset-md-2" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form | crispy }}
+        {{ user_form | crispy }}
+        {{ profile_form | crispy }}
         <button type="submit" class="btn btn-primary mt-2">Update Profile</button>
     </form>
 {% endblock content %}

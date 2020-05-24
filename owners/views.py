@@ -4,6 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from owners.models import OwnerProfile
 from .forms import OwnerProfileUpdateForm
+from accounts.forms import UserUpdateForm
 
 
 class OwnerHomeView(TemplateView):
@@ -17,7 +18,18 @@ class OwnerProfileView(DetailView):
     context_object_name = 'owner_profile'
 
 
-class OwnerProfileUpdateView(SuccessMessageMixin, UpdateView):
+class OwnerProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = OwnerProfile
     form_class = OwnerProfileUpdateForm
     success_message = "Your profile has been updated successful."
+
+    def test_func(self):
+        if self.request.user.ownerprofile == OwnerProfile.objects.get(user_id=self.kwargs['pk']):
+            return True
+        return False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_form'] = UserUpdateForm(instance=self.request.user)
+        context['profile_form'] = OwnerProfileUpdateForm(instance=self.request.user.ownerprofile)
+        return context
