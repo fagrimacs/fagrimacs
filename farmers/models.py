@@ -26,7 +26,3 @@ class FarmerProfile(models.Model):
 
     def get_profile_update_url(self):
         return reverse('farmers:farmer-profile-update', kwargs={'pk': self.user_id})
-
-    def update_profile_picture(self):
-        current_pic = self.profile_pic.url
-        print(current_pic)
