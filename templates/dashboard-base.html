@@ -98,14 +98,29 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
-          <li class="nav-header">EXAMPLES</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+            <li class="nav-item">
+            <a href="{% url 'admins:admin-homepage' %}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Calendar
-                <span class="badge badge-info right">2</span>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'admins:farmer-list' %}" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Farmers
+                <span class="badge badge-info right">200</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'admins:owner-list' %}" class="nav-link">
+              <i class="nav-icon far fas fa-users"></i>
+              <p>
+                Owners
+                <span class="badge badge-info right">500</span>
               </p>
             </a>
           </li>
@@ -156,37 +171,35 @@
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
-        </div><!-- /.row -->
+      </div>
       </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              <span class="sr-only">Close</span>
-            </button>
-            {{ message }}
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  <span class="sr-only">Close</span>
+                </button>
+                {{ message }}
+              </div>
+            {% endfor %}
+            {% endif %}
+            
+            {% block content %}
+              
+            {% endblock content %}
+    
           </div>
-        {% endfor %}
-        {% endif %}
-        
-        {% block content %}
-          
-        {% endblock content %}
-          
-
-
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+          </section>
+    <!-- /.content-header -->
   </div>
-  <!-- /.content-wrapper -->
+   <!-- End of Content Wrapper. Contains page content -->
+
+    
   <footer class="main-footer">
     <strong>Copyright &copy; 2020 <a href="#">Fagrimacs Entreprise</a>.</strong>
     All rights reserved.
