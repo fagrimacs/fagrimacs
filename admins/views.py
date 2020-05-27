@@ -106,7 +106,7 @@ def register_owner(request):
     })
 
 
-class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+class FarmersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = CustomUser
     template_name = 'admin/farmers.html'
     context_object_name = 'farmers'
@@ -119,7 +119,7 @@ class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         return False
 
 
-class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+class OwnersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = CustomUser
     template_name = 'admin/owners.html'
     context_object_name = 'owners'
@@ -131,7 +131,7 @@ class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         return False
 
 
-class ExportFarmersCsv(View):
+class ExportFarmersCsv(LoginRequiredMixin, UserPassesTestMixin, View):
     """View for exporting Farmers list."""
 
     def get(self, request):
@@ -146,11 +146,16 @@ class ExportFarmersCsv(View):
             writer.writerow(order)
 
         return response
-
-
-class ExportOwnersCsv(View):
-    """View for exporting Owners list."""
     
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
+
+
+class ExportOwnersCsv(LoginRequiredMixin, UserPassesTestMixin, View):
+    """View for exporting Owners list."""
+
     def get(self, request):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="owners-list.csv"'
@@ -163,3 +168,8 @@ class ExportOwnersCsv(View):
             writer.writerow(order)
 
         return response
+    
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
