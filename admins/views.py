@@ -16,6 +16,7 @@ from .models import AdminProfile
 from .forms import AdminProfileUpdateForm
 from accounts.forms import UserUpdateForm, FarmerSignUpForm, OwnerSignUpForm
 from farmers.models import FarmerProfile
+from farmers.forms import FarmerProfileUpdateForm
 from owners.models import OwnerProfile
 from accounts.tokens import account_activation_token
 from accounts.models import CustomUser
@@ -23,6 +24,12 @@ from accounts.models import CustomUser
 class AdminHomeView(TemplateView):
     """Add Farmer Dashboard view """
     template_name = 'admin/admin_home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['farmers'] = CustomUser.objects.filter(is_farmer=True)
+        context['owners'] = CustomUser.objects.filter(is_owner=True)
+        return context
 
 
 # class FarmersView(TemplateView):
@@ -62,6 +69,7 @@ class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMes
         context['user_form'] = UserUpdateForm(instance=self.request.user)
         context['profile_form'] = AdminProfileUpdateForm(instance=self.request.user.adminprofile)
         return context
+
 
 def register_farmer(request):
     """View for Admin to register farmer"""
@@ -125,7 +133,6 @@ class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
     model = CustomUser
     template_name = 'admin/farmers.html'
     context_object_name = 'farmers'
-    # paginate_by = 30
     queryset = CustomUser.objects.filter(is_farmer=True)
 
     def test_func(self):
