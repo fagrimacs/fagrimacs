@@ -4,7 +4,7 @@ from django.shortcuts import render, reverse
 from django.template.loader import get_template
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import TemplateView, DetailView, UpdateView
+from django.views.generic import TemplateView, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import (
     LoginRequiredMixin, UserPassesTestMixin
 )
@@ -16,15 +16,16 @@ from accounts.forms import UserUpdateForm, FarmerSignUpForm, OwnerSignUpForm
 from farmers.models import FarmerProfile
 from owners.models import OwnerProfile
 from accounts.tokens import account_activation_token
+from accounts.models import CustomUser
 
 class AdminHomeView(TemplateView):
     """Add Farmer Dashboard view """
     template_name = 'admin/admin_home.html'
 
 
-class FarmersView(TemplateView):
-    """Add Farmer List view """
-    template_name = 'admin/farmers.html'
+# class FarmersView(TemplateView):
+#     """Add Farmer List view """
+#     template_name = 'admin/farmers.html'
 
 
 class OwnersView(TemplateView):
@@ -116,3 +117,16 @@ def register_owner(request):
     return render(request, 'admin/register_owner.html', {
         'form': form,
     })
+
+
+class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    model = CustomUser
+    template_name = 'admin/farmers.html'
+    context_object_name = 'farmers'
+    # paginate_by = 30
+    queryset = CustomUser.objects.filter(is_farmer=True)
+
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False

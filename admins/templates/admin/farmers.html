@@ -35,29 +35,19 @@
       </thead>
       <tbody>
         <tr>
-          <td>1</td>
-          <td>Medson Naftali</td>
-          <td>medsonnaftal@gmail.com</td>
-          <td>0767176929</td>
-          <td>Technology Homesite</td>
-          <td>Tanzania</td>
+          {% for user in farmers %}
+          <td>{{ forloop.counter }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.company }}</td>
+          <td>{{ user.country }}</td>
           <td class="text-center">
-            <a href="#" style="margin-right: 20px;"><i class="fas fa-edit"></i></a>
-            <a href="#"><i class="fas fa-trash-alt" style="color: red;"></i></a>
+            <a href="#"><i class="fas fa-edit"></i></a>
+            <!-- <a href="#"><i class="fas fa-trash-alt" style="color: red;"></i></a> -->
           </td>
         </tr>
-        <tr>
-          <td>2</td>
-          <td>Zenda Innocents</td>
-          <td>medsonnaftal@gmail.com</td>
-          <td>0767176929</td>
-          <td>Technology Homesite</td>
-          <td>Tanzania</td>
-          <td class="text-center">
-            <a href="#" style="margin-right: 20px;"><i class="fas fa-edit"></i></a>
-            <a href="#"><i class="fas fa-trash-alt" style="color: red;"></i></a>
-          </td>
-        </tr>
+        {% endfor %}
       </tbody>
       <tfoot>
       <tr>
