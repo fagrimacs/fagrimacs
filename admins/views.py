@@ -1,3 +1,9 @@
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.shortcuts import render, reverse
+from django.template.loader import get_template
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import TemplateView, DetailView, UpdateView
 from django.contrib.auth.mixins import (
     LoginRequiredMixin, UserPassesTestMixin
@@ -6,8 +12,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import AdminProfile
 from .forms import AdminProfileUpdateForm
-from accounts.forms import UserUpdateForm
-
+from accounts.forms import UserUpdateForm, FarmerSignUpForm, OwnerSignUpForm
+from farmers.models import FarmerProfile
+from owners.models import OwnerProfile
+from accounts.tokens import account_activation_token
 
 class AdminHomeView(TemplateView):
     """Add Farmer Dashboard view """
@@ -51,3 +59,60 @@ class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMes
         context['user_form'] = UserUpdateForm(instance=self.request.user)
         context['profile_form'] = AdminProfileUpdateForm(instance=self.request.user.adminprofile)
         return context
+
+def register_farmer(request):
+    """View for Admin to register farmer"""
+    form = FarmerSignUpForm(request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        user.email = form.cleaned_data['email']
+        user.save()
+        # Create profile
+        farmer_profile = FarmerProfile(user=user)
+        farmer_profile.save()
+        # send confirmation email
+        token = account_activation_token.make_token(user)
+        user_id = urlsafe_base64_encode(force_bytes(user.id))
+        url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
+        message = get_template('registration/account_activation_email.html').render({
+            'confirm_url': url
+        })
+        mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
+        mail.content_subtype = 'html'
+        mail.send()
+
+        return render(request, 'admin/registration_pending.html',{
+            'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
+            })
+    return render(request, 'admin/register_farmer.html', {
+        'form': form,
+    })
+
+
+def register_owner(request):
+    """View for Admin to register farmer"""
+    form = OwnerSignUpForm(request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        user.email = form.cleaned_data['email']
+        user.save()
+        # Create profile
+        owner_profile = OwnerProfile(user=user)
+        owner_profile.save()
+        # send confirmation email
+        token = account_activation_token.make_token(user)
+        user_id = urlsafe_base64_encode(force_bytes(user.id))
+        url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
+        message = get_template('registration/account_activation_email.html').render({
+            'confirm_url': url
+        })
+        mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
+        mail.content_subtype = 'html'
+        mail.send()
+
+        return render(request, 'admin/registration_pending.html',{
+            'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
+            })
+    return render(request, 'admin/register_owner.html', {
+        'form': form,
+    })
