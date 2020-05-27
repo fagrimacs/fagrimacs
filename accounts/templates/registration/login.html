@@ -21,10 +21,9 @@
 			<h4 class="modal-title">Login to Your Account</h4>
 			{{ form | crispy }}
 			<div class="form-group small clearfix">
-				<label class="checkbox-inline"><input type="checkbox"> Remember me</label>
-				<a href="#" class="forgot-link">Forgot Password?</a>
-			</div> 
-			<input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+				<input type="submit" class="btn btn-primary btn-block btn-lg mb-2" value="Login">
+				<a href="{% url 'password_reset' %}" class="forgot-link">Forgot Password?</a>
+			</div>
 			<div class="text-center small">Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a></div>
 		</form>			
 	</div>

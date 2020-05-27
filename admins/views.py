@@ -6,7 +6,7 @@ from django.shortcuts import render, reverse
 from django.template.loader import get_template
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import TemplateView, DetailView, UpdateView, ListView
+from django.views.generic import TemplateView, View, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import (
     LoginRequiredMixin, UserPassesTestMixin
 )
@@ -22,8 +22,9 @@ from accounts.tokens import account_activation_token
 from accounts.models import CustomUser
 
 class AdminHomeView(TemplateView):
-    """Add Farmer Dashboard view """
+    """Admin Dashboard view """
     template_name = 'admin/admin_home.html'
+<<<<<<< HEAD
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -45,6 +46,8 @@ class OwnersView(TemplateView):
 class ProfileView(TemplateView):
     """Add Profile view """
     template_name = 'admin/admin_profile.html'
+=======
+>>>>>>> ab689267e8c042efc38f2e3a4eb9c03dd72d57a9
  
 
 class AdminProfileView(DetailView):
@@ -129,7 +132,7 @@ def register_owner(request):
     })
 
 
-class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+class FarmersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = CustomUser
     template_name = 'admin/farmers.html'
     context_object_name = 'farmers'
@@ -141,7 +144,7 @@ class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         return False
 
 
-class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+class OwnersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = CustomUser
     template_name = 'admin/owners.html'
     context_object_name = 'owners'
@@ -153,29 +156,45 @@ class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         return False
 
 
-def export_farmers_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="farmers-list.csv"'
+class ExportFarmersCsv(LoginRequiredMixin, UserPassesTestMixin, View):
+    """View for exporting Farmers list."""
 
-    writer = csv.writer(response)
-    writer.writerow(['name','company','email','phone','country',])
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="farmers-list.csv"'
 
-    orders = CustomUser.objects.filter(is_farmer=True).values_list('name','company','email','phone','country',)
-    for order in orders:
-        writer.writerow(order)
+        writer = csv.writer(response)
+        writer.writerow(['name','company','email','phone','country',])
 
-    return response
+        orders = CustomUser.objects.filter(is_farmer=True).values_list('name','company','email','phone','country',)
+        for order in orders:
+            writer.writerow(order)
+
+        return response
+    
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
 
 
-def export_owners_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="owners-list.csv"'
+class ExportOwnersCsv(LoginRequiredMixin, UserPassesTestMixin, View):
+    """View for exporting Owners list."""
 
-    writer = csv.writer(response)
-    writer.writerow(['name','company','email','phone','country',])
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="owners-list.csv"'
 
-    orders = CustomUser.objects.filter(is_owner=True).values_list('name','company','email','phone','country',)
-    for order in orders:
-        writer.writerow(order)
+        writer = csv.writer(response)
+        writer.writerow(['name','company','email','phone','country',])
 
-    return response
+        orders = CustomUser.objects.filter(is_owner=True).values_list('name','company','email','phone','country',)
+        for order in orders:
+            writer.writerow(order)
+
+        return response
+    
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
