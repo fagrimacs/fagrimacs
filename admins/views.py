@@ -130,3 +130,15 @@ class FarmersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         if self.request.user.is_admin:
             return True
         return False
+
+
+class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    model = CustomUser
+    template_name = 'admin/owners.html'
+    context_object_name = 'owners'
+    queryset = CustomUser.objects.filter(is_owner=True)
+
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
