@@ -6,7 +6,7 @@ from django.shortcuts import render, reverse
 from django.template.loader import get_template
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import TemplateView, DetailView, UpdateView, ListView
+from django.views.generic import TemplateView, View, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import (
     LoginRequiredMixin, UserPassesTestMixin
 )
@@ -131,29 +131,35 @@ class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         return False
 
 
-def export_farmers_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="farmers-list.csv"'
+class ExportFarmersCsv(View):
+    """View for exporting Farmers list."""
 
-    writer = csv.writer(response)
-    writer.writerow(['name','company','email','phone','country',])
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="farmers-list.csv"'
 
-    orders = CustomUser.objects.filter(is_farmer=True).values_list('name','company','email','phone','country',)
-    for order in orders:
-        writer.writerow(order)
+        writer = csv.writer(response)
+        writer.writerow(['name','company','email','phone','country',])
 
-    return response
+        orders = CustomUser.objects.filter(is_farmer=True).values_list('name','company','email','phone','country',)
+        for order in orders:
+            writer.writerow(order)
+
+        return response
 
 
-def export_owners_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="owners-list.csv"'
+class ExportOwnersCsv(View):
+    """View for exporting Owners list."""
+    
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="owners-list.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow(['name','company','email','phone','country',])
+        writer = csv.writer(response)
+        writer.writerow(['name','company','email','phone','country',])
 
-    orders = CustomUser.objects.filter(is_owner=True).values_list('name','company','email','phone','country',)
-    for order in orders:
-        writer.writerow(order)
+        orders = CustomUser.objects.filter(is_owner=True).values_list('name','company','email','phone','country',)
+        for order in orders:
+            writer.writerow(order)
 
-    return response
+        return response
