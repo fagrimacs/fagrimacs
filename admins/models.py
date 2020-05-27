@@ -6,7 +6,7 @@ from django.urls import reverse
 from accounts.models import CustomUser
 
 
-# Farmer Profile
+# Admin Profile
 def profile_pic_filename(instance, filename):
     ext = filename.split('.')[1]
     new_filename = '{}.{}'.format(uuid4(), ext)
