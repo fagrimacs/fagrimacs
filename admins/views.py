@@ -1,3 +1,5 @@
+import csv
+from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.shortcuts import render, reverse
@@ -142,3 +144,31 @@ class OwnersListView(LoginRequiredMixin,UserPassesTestMixin, ListView):
         if self.request.user.is_admin:
             return True
         return False
+
+
+def export_farmers_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="farmers-list.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['name','company','email','phone','country',])
+
+    orders = CustomUser.objects.filter(is_farmer=True).values_list('name','company','email','phone','country',)
+    for order in orders:
+        writer.writerow(order)
+
+    return response
+
+
+def export_owners_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="owners-list.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['name','company','email','phone','country',])
+
+    orders = CustomUser.objects.filter(is_owner=True).values_list('name','company','email','phone','country',)
+    for order in orders:
+        writer.writerow(order)
+
+    return response

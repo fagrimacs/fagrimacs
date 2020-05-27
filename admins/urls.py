@@ -12,4 +12,6 @@ urlpatterns = [
     path('owners/list', views.OwnersListView.as_view(), name='owner-list'),
     path('register/farmer', views.register_farmer, name='register-farmer'),
     path('register/owner', views.register_owner, name='register-owner'),
+    path('export/farmer/csv/', views.export_farmers_csv, name='export-farmers-csv'),
+    path('export/owner/csv/', views.export_owners_csv, name='export-owners-csv'),
 ]
