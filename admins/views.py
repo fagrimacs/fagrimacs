@@ -24,31 +24,13 @@ from accounts.models import CustomUser
 class AdminHomeView(TemplateView):
     """Admin Dashboard view """
     template_name = 'admin/admin_home.html'
-<<<<<<< HEAD
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['farmers'] = CustomUser.objects.filter(is_farmer=True)
         context['owners'] = CustomUser.objects.filter(is_owner=True)
         return context
-
-
-# class FarmersView(TemplateView):
-#     """Add Farmer List view """
-#     template_name = 'admin/farmers.html'
-
-
-class OwnersView(TemplateView):
-    """Add Owner List view """
-    template_name = 'admin/owners.html'
-
-
-class ProfileView(TemplateView):
-    """Add Profile view """
-    template_name = 'admin/admin_profile.html'
-=======
->>>>>>> ab689267e8c042efc38f2e3a4eb9c03dd72d57a9
- 
+        
 
 class AdminProfileView(DetailView):
     model = AdminProfile

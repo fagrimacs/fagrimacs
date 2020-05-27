@@ -58,3 +58,18 @@ class TestAccountsViews(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/registration_complete.html')
+
+
+class TestSuccessUrlOnLogin(TestCase):
+    """Test a success url for each user type when logged in."""
+
+    def setUp(self):
+        self.farmer_user = CustomUser.objects.create(
+            name='Innocent', email='farmer@fagrimacs.com', is_farmer=True,
+            password='idfsoiudiudf',
+        )
+
+    def test_farmer_success_url(self):
+        response = self.client.login(email='farmer@fagrimacs.com', password='idfsoiudiudf')
+
+        # self.assertTrue(response)
