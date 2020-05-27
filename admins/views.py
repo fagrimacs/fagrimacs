@@ -21,23 +21,8 @@ from accounts.tokens import account_activation_token
 from accounts.models import CustomUser
 
 class AdminHomeView(TemplateView):
-    """Add Farmer Dashboard view """
+    """Admin Dashboard view """
     template_name = 'admin/admin_home.html'
-
-
-# class FarmersView(TemplateView):
-#     """Add Farmer List view """
-#     template_name = 'admin/farmers.html'
-
-
-class OwnersView(TemplateView):
-    """Add Owner List view """
-    template_name = 'admin/owners.html'
-
-
-class ProfileView(TemplateView):
-    """Add Profile view """
-    template_name = 'admin/admin_profile.html'
  
 
 class AdminProfileView(DetailView):
