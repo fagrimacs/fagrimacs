@@ -1,6 +1,8 @@
-from django.views.generic import TemplateView, DetailView, UpdateView
+from django.views.generic import TemplateView, View, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
+from django.shortcuts import render, redirect, reverse
 
 from owners.models import OwnerProfile
 from .forms import OwnerProfileUpdateForm
@@ -29,18 +31,31 @@ class OwnerProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return False
 
 
-class OwnerProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
-    model = OwnerProfile
-    form_class = OwnerProfileUpdateForm
-    success_message = "Your profile has been updated successful."
+class OwnerProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, View):
+    """View for updating onwers profile."""
+
+    def get(self, request, pk):
+        context = {
+            'user_form': UserUpdateForm(instance=request.user),
+            'profile_form': OwnerProfileUpdateForm(instance=request.user.ownerprofile)
+        }
+        return render(request, 'farmers/farmerprofile_form.html', context)
+
+    def post(self, request, pk):
+        if request.method == 'POST':
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            profile_form = OwnerProfileUpdateForm(request.POST, request.FILES, instance=request.user.ownerprofile)
+
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()
+                profile_form.save()
+                messages.success(request, 'Your profile has been updated successful.')
+                return redirect(reverse('owners:owner-profile', kwargs={'pk': request.user.pk}))
+        else:
+            user_form = UserUpdateForm(instance=request.user)
+            profile_form = OwnerProfileUpdateForm(instance=request.user.ownerprofile)
 
     def test_func(self):
         if self.request.user.ownerprofile == OwnerProfile.objects.get(user_id=self.kwargs['pk']):
             return True
         return False
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user_form'] = UserUpdateForm(instance=self.request.user)
-        context['profile_form'] = OwnerProfileUpdateForm(instance=self.request.user.ownerprofile)
-        return context
