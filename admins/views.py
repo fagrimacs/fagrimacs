@@ -78,9 +78,8 @@ class RegisterFarmerView(LoginRequiredMixin, UserPassesTestMixin, View):
     """View for Admin to register Farmer."""
 
     def get(self, request):
-        form = FarmerSignUpForm(request.POST or None)
         return render(request, 'admin/register_farmer.html', {
-            'form': form,
+            'form': FarmerSignUpForm(),
         })
 
     def post(self, request):
@@ -107,6 +106,10 @@ class RegisterFarmerView(LoginRequiredMixin, UserPassesTestMixin, View):
                 return render(request, 'admin/registration_pending.html',{
                     'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
                     })
+            else:
+                return render(request, 'admin/register_farmer.html', {
+                    'form': form,
+                })
     
     def test_func(self):
         if self.request.user.is_admin:
@@ -114,33 +117,48 @@ class RegisterFarmerView(LoginRequiredMixin, UserPassesTestMixin, View):
         return False
 
 
-def register_owner(request):
+class RegisterOwnerView(LoginRequiredMixin, UserPassesTestMixin, View):
     """View for Admin to register farmer"""
-    form = OwnerSignUpForm(request.POST or None)
-    if form.is_valid():
-        user = form.save()
-        user.email = form.cleaned_data['email']
-        user.save()
-        # Create profile
-        owner_profile = OwnerProfile(user=user)
-        owner_profile.save()
-        # send confirmation email
-        token = account_activation_token.make_token(user)
-        user_id = urlsafe_base64_encode(force_bytes(user.id))
-        url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
-        message = get_template('registration/account_activation_email.html').render({
-            'confirm_url': url
-        })
-        mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
-        mail.content_subtype = 'html'
-        mail.send()
 
-        return render(request, 'admin/registration_pending.html',{
-            'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
-            })
-    return render(request, 'admin/register_owner.html', {
-        'form': form,
-    })
+    def get(self, request):
+        return render(request, 'admin/register_owner.html', {
+            'form': OwnerSignUpForm(),
+        })
+
+    def post(self, request):
+        if request.method == 'POST':
+            form = OwnerSignUpForm(request.POST or None)
+            if form.is_valid():
+                user = form.save()
+                user.email = form.cleaned_data['email']
+                user.save()
+                # Create profile
+                owner_profile = OwnerProfile(user=user)
+                owner_profile.save()
+                # send confirmation email
+                token = account_activation_token.make_token(user)
+                user_id = urlsafe_base64_encode(force_bytes(user.id))
+                url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
+                message = get_template('registration/account_activation_email.html').render({
+                    'confirm_url': url
+                })
+                mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
+                mail.content_subtype = 'html'
+                mail.send()
+
+                return render(request, 'admin/registration_pending.html',{
+                    'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
+                    })
+            else:
+                return render(request, 'admin/register_owner.html', {
+                    'form': form,
+                })
+
+    
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
 
 
 class FarmersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
