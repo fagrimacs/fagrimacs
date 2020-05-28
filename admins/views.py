@@ -74,34 +74,39 @@ class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
         return False
 
 
+class RegisterFarmerView(View):
+    """View for Admin to register Farmer."""
 
-def register_farmer(request):
-    """View for Admin to register farmer"""
-    form = FarmerSignUpForm(request.POST or None)
-    if form.is_valid():
-        user = form.save()
-        user.email = form.cleaned_data['email']
-        user.save()
-        # Create profile
-        farmer_profile = FarmerProfile(user=user)
-        farmer_profile.save()
-        # send confirmation email
-        token = account_activation_token.make_token(user)
-        user_id = urlsafe_base64_encode(force_bytes(user.id))
-        url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
-        message = get_template('registration/account_activation_email.html').render({
-            'confirm_url': url
+    def get(self, request):
+        form = FarmerSignUpForm(request.POST or None)
+        return render(request, 'admin/register_farmer.html', {
+            'form': form,
         })
-        mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
-        mail.content_subtype = 'html'
-        mail.send()
 
-        return render(request, 'admin/registration_pending.html',{
-            'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
-            })
-    return render(request, 'admin/register_farmer.html', {
-        'form': form,
-    })
+    def post(self, request):
+        if request.method == 'POST':
+            form = FarmerSignUpForm(request.POST or None)
+            if form.is_valid():
+                user = form.save()
+                user.email = form.cleaned_data['email']
+                user.save()
+                # Create profile
+                farmer_profile = FarmerProfile(user=user)
+                farmer_profile.save()
+                # send confirmation email
+                token = account_activation_token.make_token(user)
+                user_id = urlsafe_base64_encode(force_bytes(user.id))
+                url = 'http://fagrimacs.com' + reverse('accounts:confirm-email', kwargs={'user_id': user_id, 'token': token})
+                message = get_template('registration/account_activation_email.html').render({
+                    'confirm_url': url
+                })
+                mail = EmailMessage('Fagrimacs Account Confirmation', message, to=[user.email], from_email=settings.EMAIL_HOST_USER)
+                mail.content_subtype = 'html'
+                mail.send()
+
+                return render(request, 'admin/registration_pending.html',{
+                    'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
+                    })
 
 
 def register_owner(request):
