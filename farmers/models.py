@@ -4,6 +4,7 @@ from django.db import models
 from django.urls import reverse
 
 from accounts.models import CustomUser
+from django.core.validators import URLValidator
 
 
 # Farmer Profile
@@ -16,6 +17,9 @@ def profile_pic_filename(instance, filename):
 class FarmerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     profile_pic = models.ImageField(verbose_name='Profile Picture', default='profile_pics/user.svg', upload_to=profile_pic_filename)
+    website = models.CharField(validators=[URLValidator()], blank=True, max_length=254, default="http://fagrimacs.com")
+    region = models.CharField(max_length=254)
+    street = models.CharField(max_length=254)
     email_confirmed = models.BooleanField(default=False)
 
     def __str__(self):

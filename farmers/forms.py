@@ -9,4 +9,4 @@ class FarmerProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = FarmerProfile
-        fields = ['profile_pic', ]
+        fields = ['website','region','street','profile_pic',]
