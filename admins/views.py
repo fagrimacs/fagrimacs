@@ -1,8 +1,10 @@
 import csv
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import update_session_auth_hash
 from django.conf import settings
+from django.contrib import messages
 from django.core.mail import EmailMessage
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.template.loader import get_template
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -38,22 +40,39 @@ class AdminProfileView(DetailView):
     context_object_name = 'admin_profile'
 
 
-class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
-    model = AdminProfile
-    form_class = AdminProfileUpdateForm
-    template_name = 'admin/adminprofile_update.html'
-    success_message = "Your profile has been updated successful."
+class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
 
+    def get(self, request, pk):
+        form = UserUpdateForm(instance=request.user)
+        profile_form = AdminProfileUpdateForm(instance=request.user.adminprofile)
+        context = {
+                'form': form,
+                'profile_form': profile_form
+            }
+        return render(request, 'admin/adminprofile_update.html', context)
+
+
+    def post(self, request, pk):
+        form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = AdminProfileUpdateForm(request.POST, request.FILES, instance=request.user.adminprofile)
+
+        if form.is_valid() and profile_form.is_valid():
+            form = form.save()
+            custom_form = profile_form.save(False)
+            custom_form.user = form
+            custom_form.save()
+            return redirect(reverse('admins:admin-homepage'))
+            context = {
+                'form': form,
+                'profile_form': profile_form
+            }
+        return render(request, 'admin/adminprofile_update.html', context)
+    
     def test_func(self):
         if self.request.user.adminprofile == AdminProfile.objects.get(user_id=self.kwargs['pk']):
             return True
         return False
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user_form'] = UserUpdateForm(instance=self.request.user)
-        context['profile_form'] = AdminProfileUpdateForm(instance=self.request.user.adminprofile)
-        return context
 
 
 def register_farmer(request):
