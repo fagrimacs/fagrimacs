@@ -8,4 +8,4 @@ class OwnerProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = OwnerProfile
-        fields = ['profile_pic', ]
+        fields = ['website','region','street','profile_pic',]

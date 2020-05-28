@@ -106,6 +106,21 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item">
+            {% if request.user.is_farmer %}
+            <a href="{% url 'farmers:farmer-homepage' %}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+            {% elif request.user.is_owner %}
+            <a href="{% url 'owners:owner-homepage' %}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+            {% else %}
             <a href="{% url 'admins:admin-homepage' %}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -113,6 +128,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          
           {% if request.user.is_farmer %}
           {% elif request.user.is_owner %}
           {% else %}
