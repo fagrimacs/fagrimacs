@@ -61,7 +61,8 @@ class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
             custom_form = profile_form.save(False)
             custom_form.user = form
             custom_form.save()
-            return redirect(reverse('admins:admin-homepage'))
+            messages.success(request, 'Your profile has been updated successful.')
+            return redirect(reverse('admins:admin-profile', kwargs={'pk': request.user.pk}))
             context = {
                 'form': form,
                 'profile_form': profile_form
