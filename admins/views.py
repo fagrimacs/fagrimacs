@@ -74,7 +74,7 @@ class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
         return False
 
 
-class RegisterFarmerView(View):
+class RegisterFarmerView(LoginRequiredMixin, UserPassesTestMixin, View):
     """View for Admin to register Farmer."""
 
     def get(self, request):
@@ -107,6 +107,11 @@ class RegisterFarmerView(View):
                 return render(request, 'admin/registration_pending.html',{
                     'message': f'A confirmation email has been sent to your email. Please confirm to finish registration.'
                     })
+    
+    def test_func(self):
+        if self.request.user.is_admin:
+            return True
+        return False
 
 
 def register_owner(request):
