@@ -95,4 +95,4 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['name', 'phone', ]
+        fields = ['name', 'phone', 'company', ]
