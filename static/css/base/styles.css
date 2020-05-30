@@ -1,16 +1,16 @@
 @font-face {
 	font-family: "PT-Sans-Bold";
-	src: url(../fonts/PT_Sans-Web-Bold.ttf);
+	src: url(../../fonts/PT_Sans-Web-Bold.ttf);
 }
   
 @font-face {
 	font-family: "PT-Sans-Regular";
-	src: url(../fonts/PT_Sans-Web-Regular.ttf);
+	src: url(../../fonts/PT_Sans-Web-Regular.ttf);
 }
   
 @font-face {
 	font-family: "PT-Sans-Italic";
-	src: url(../fonts/PT_Sans-Web-Italic.ttf);
+	src: url(../../fonts/PT_Sans-Web-Italic.ttf);
 }
 
 * {

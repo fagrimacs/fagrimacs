@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center pt-5 pb-5">
+  <h1>Welcome to Fagrimacs</h1>
+  <p class="lead">
+    Create an account to have an access...
+  </p>
+  <div class="text-center">
+    <p class="font-weight-bold">
+    What your primary role in this platform?
+    </p>
+    <a href="{% url 'accounts:farmer-signup' %}" class="btn btn-outline-success btn-lg mx-2">Farmer</a>
+    <a href="{% url 'accounts:owner-signup' %}" class="btn btn-outline-danger btn-lg mx-2">Owner</a>
+  </div><br><br>
+  <div class="container">
+    <div class="row">
+      <div class="col text-center">
+      <h3>Frequecy Asked Questions (FAQs)</h3>
+      <br><br><br><br>
+      </div>
+      </div>
+    </div>
+
+
+</div>
+<br>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fagrimacs - Login</title>
+	<!-- Sites CSS script -->
+	<link rel="shortcut icon" href="{% static 'images/fav-icon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/base/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/base/custom-styles.css' %}">
+	<link rel="stylesheet" href="{% static 'css/base/fontawesome.min.css' %}">
+</head>
+<body>
+<section class="main-login">
+	<div class="login-form">
+		<form action="" method="post">
+			{% csrf_token %}
+			<div class="avatar"><i class="fas fa-user"></i></div>
+			<h4 class="modal-title">Login to Your Account</h4>
+			{{ form | crispy }}
+			<div class="form-group small clearfix">
+				<input type="submit" class="btn btn-primary btn-block btn-lg mb-2" value="Login">
+				<a href="{% url 'password_reset' %}" class="forgot-link">Forgot Password?</a>
+			</div>
+			<div class="text-center small">Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a></div>
+		</form>			
+	</div>
+</section>
+<!-- Sites Javascripts script -->
+    <script src="{% static 'js/base/popper.min.js' %}"></script>
+    <script src="{% static 'js/base/jquery.min.js' %}"></script>
+    <script src="{% static 'js/base/bootstrap.min.js' %}"></script>
+</body>
+</html>
