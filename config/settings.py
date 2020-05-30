@@ -36,6 +36,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    'equipments.apps.EquipmentsConfig',
     'accounts.apps.AccountsConfig',
     'farmers.apps.FarmersConfig',
     'owners.apps.OwnersConfig',
