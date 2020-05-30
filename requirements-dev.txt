@@ -1,4 +1,1 @@
 -r requirements.txt
-pytest==5.4.2
-pytest-django==3.9.0
-pytest-cov==2.8.1

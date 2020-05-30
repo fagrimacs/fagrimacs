@@ -1,0 +1,68 @@
+{% extends 'dashboard-base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="">Farmers</h3>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <a href="{% url 'admins:register-farmer' %}" class="btn btn-outline-primary">
+      <i class="fas fa-plus-circle"></i>
+      Add Farmer
+    </a>
+    <a href="{% url 'admins:export-farmers-csv' %}" class="btn btn-outline-success float-right">
+      <i class="fas fa-print"></i>
+      Export
+    </a>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <table id="example1" class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Full name</th>
+        <th>Email address</th>
+        <th>Phone Number</th>
+        <th>Company Name</th>
+        <th>Country</th>
+        <th>action</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for user in farmers %}
+          <td>{{ forloop.counter }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.company }}</td>
+          <td>{{ user.country.name }}</td>
+          <td class="text-center">
+            <a href="#"><i class="fas fa-edit"></i></a>
+            <!-- <a href="#"><i class="fas fa-trash-alt" style="color: red;"></i></a> -->
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+      <tr>
+        <th>#</th>
+        <th>Full name</th>
+        <th>Email address</th>
+        <th>Phone Number</th>
+        <th>Company Name</th>
+        <th>Country</th>
+        <th>action</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+{% endblock %}

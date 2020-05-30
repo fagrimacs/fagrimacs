@@ -1,12 +1,13 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
-)
+
+from django.core.validators import RegexValidator
+from django_countries.fields import CountryField
 
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, name, password=None):
-        
+
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -20,7 +21,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, name, password=None):
-        
+
         user = self.create_user(
             email,
             password=password,
@@ -38,7 +39,11 @@ class CustomUser(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name='Full name')
+    company = models.CharField(max_length=256, verbose_name='Company Name', blank=True)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone = models.CharField(validators=[phone_regex], max_length=15, verbose_name='Phone Number')
+    country = CountryField(default='TZ', verbose_name='Country of Registration')
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -48,7 +53,7 @@ class CustomUser(AbstractBaseUser):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name',]
+    REQUIRED_FIELDS = ['name', 'phone', 'country', ]
 
     def __str__(self):
         return self.email

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class="col-md-4 offset-md-4 pt-5">
+
+  <h3 class="text-success">Registration Complete.</h3>
+  <p><b>You can logIn now</b></p>
+  <a class="btn btn-warning btn-lg" role="button" href="{% url 'login' %}">Login</a>
+
+</div>
+{% endblock %}
