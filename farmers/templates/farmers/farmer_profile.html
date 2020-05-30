@@ -4,6 +4,7 @@
 
 
 {% block content %}
+<<<<<<< Updated upstream
 <section class="content-header">
   <!-- Main content -->
   <section class="content">
@@ -86,6 +87,14 @@
               </div>
               <!-- /.tab-content -->
             </div><!-- /.card-body -->
+=======
+          <img class="img-profile rounded-circle" src="{{ farmer_profile.profile_pic.url }}" alt="{{ farmer_profile }} Picture">
+          <h4>{{ farmer_profile }}</h4>
+          {% if request.user == farmer_profile.user %}
+          <div class="my-3">
+              <a class="btn btn-secondary" href="{{ farmer_profile.get_profile_update_url }}">Edit Profile</a>
+              <a class="btn btn-danger ml-2" href="{% url 'password_change' %}">Change Password</a>
+>>>>>>> Stashed changes
           </div>
           <!-- /.nav-tabs-custom -->
         </div>

@@ -4,6 +4,7 @@
 
 
 {% block content %}
+<<<<<<< Updated upstream
 <section class="content-header">
   <!-- Main content -->
   <section class="content">
@@ -21,6 +22,16 @@
               </div>
 
               <h3 class="profile-username text-center">{{user.name}}</h3>
+=======
+    <img class="img-profile rounded-circle" src="{{ owner_profile.profile_pic.url }}" alt="{{ owner_profile }} Picture">
+    <h4>{{ owner_profile }}</h4>
+    {% if request.user == owner_profile.user %}
+    <div class="my-3">
+        <a class="btn btn-secondary" href="{{ owner_profile.get_profile_update_url }}">Edit Profile</a>
+        <a class="btn btn-danger ml-2" href="{% url 'password_change' %}">Change Password</a>
+    </div>
+    {% endif %}
+>>>>>>> Stashed changes
 
               <p class="text-muted text-center">Owner</p>
 

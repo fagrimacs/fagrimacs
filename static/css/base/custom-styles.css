@@ -18,6 +18,11 @@ body {
 	line-height: 1.5;
 }
 
+.img-profile {
+	width: 200px;
+	height: 200px;
+}
+
 /* main login styles */
 
 .main-login {
@@ -48,16 +53,19 @@ body {
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 	padding: 30px;
 }
+
 @media only screen and (min-width:620px)  {
 	.login-form form {
 		max-width: 430px;
 	}
-  } 
+}
+
 .login-form h4 {
 	text-align: center;
 	font-size: 22px;
 	margin-bottom: 1em;
 }
+
 .login-form .avatar {
 	color: #fff;
 	margin: 0 auto 30px;
@@ -70,12 +78,15 @@ body {
 	padding: 15px;
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
 }
+
 .login-form .avatar i {
 	font-size: 62px;
 }
+
 .login-form .form-group {
 	margin-bottom: 10px;
 }
+
 .login-form .form-control, .login-form .btn {
 	min-height: 30px;
 	border-radius: 2px; 
@@ -87,6 +98,7 @@ body {
 	border: none;
 	line-height: normal;
 }
+
 .login-form .btn:hover, .login-form .btn:focus {
 	background: #42ae68;
 }
@@ -94,10 +106,12 @@ body {
 .login-form .forgot-link {
 	margin-top: 1em;
 }
+
 .login-form .small {
 	padding-top: 1em;
 	font-size: 1rem;
 }
+
 .login-form a {
 	color: #4aba70;
 }
