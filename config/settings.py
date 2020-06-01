@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'farmers.apps.FarmersConfig',
     'owners.apps.OwnersConfig',
+    'equipments.apps.EquipmentsConfig',
     'admins.apps.AdminsConfig',
     'main.apps.MainConfig',
 
