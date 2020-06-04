@@ -64,12 +64,8 @@ class TestSuccessUrlOnLogin(TestCase):
     """Test a success url for each user type when logged in."""
 
     def setUp(self):
-        self.farmer_user = CustomUser.objects.create(
+        self.farmer_user = CustomUser.objects.create_user(
             name='Innocent', email='farmer@fagrimacs.com', is_farmer=True,
             password='idfsoiudiudf',
         )
-
-    def test_farmer_success_url(self):
-        response = self.client.login(email='farmer@fagrimacs.com', password='idfsoiudiudf')
-
-        # self.assertTrue(response)
+        self.credentials = {'email':'farmer@fagrimacs.com', 'password':'idfsoiudiudf'}

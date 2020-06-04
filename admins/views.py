@@ -23,7 +23,7 @@ from owners.models import OwnerProfile
 from accounts.tokens import account_activation_token
 from accounts.models import CustomUser
 
-class AdminHomeView(TemplateView):
+class AdminHomeView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     """Admin Dashboard view """
     template_name = 'admin/admin_home.html'
 
@@ -32,12 +32,18 @@ class AdminHomeView(TemplateView):
         context['farmers'] = CustomUser.objects.filter(is_farmer=True)
         context['owners'] = CustomUser.objects.filter(is_owner=True)
         return context
+
+    def test_func(self):
+        return self.request.user.is_admin
         
 
-class AdminProfileView(DetailView):
+class AdminProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = AdminProfile
     template_name = 'admin/admin_profile.html'
     context_object_name = 'admin_profile'
+
+    def test_func(self):
+        return self.request.user.adminprofile == AdminProfile.objects.get(user_id=self.kwargs['pk'])
 
 
 class AdminProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
